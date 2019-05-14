@@ -37,11 +37,11 @@ router.route('/users')
     })
     .post((req, res) => {
         let user = new User();
-        user.name = req.body.name;
+        user.first_name = req.body.first_name;
+        user.last_name = req.body.last_name;
         user.age = req.body.age;
         user.gender = req.body.gender;
-        user.title = req.body.title;
-        user.start_date = req.body.start_date;
+        user.password = req.body.password;
         user.save((err, result) => {
             if (err) {
                 console.log(err);
@@ -51,9 +51,9 @@ router.route('/users')
         });
     });
 
-router.route('/users/:user_id')
+router.route('/users/:uid')
     .get((req, res) => {
-        User.findById(req.params.user_id, (err, user) => {
+        User.findById(req.params.uid, (err, user) => {
             if (err) {
                 console.log(err);
                 res.json(err);
@@ -62,16 +62,16 @@ router.route('/users/:user_id')
         });
     })
     .put((req, res) => {
-        User.findById(req.params.user_id, (err, user) => {
+        User.findById(req.params.uid, (err, user) => {
             if (err) {
                 console.log(err);
                 res.json(err);
             }
-            user.name = req.body.name;
+            user.first_name = req.body.first_name;
+            user.last_name = req.body.last_name;
             user.age = req.body.age;
             user.gender = req.body.gender;
-            user.title = req.body.title;
-            user.start_date = req.body.start_date;
+            user.password = req.body.password;
             user.save((err, result) => {
                 if (err) {
                     console.log(err);
@@ -82,7 +82,7 @@ router.route('/users/:user_id')
         });
     })
     .delete((req, res) => {
-        User.remove({ _id: req.params.user_id }, (err, result) => {
+        User.remove({ _id: req.params.uid }, (err, result) => {
             if (err) {
                 console.log(err);
                 res.json(err);

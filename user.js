@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    name : String,
+    first_name : String,
+    last_name : String,
     age : Number,
-    gender : String,
-    title : String,
-    start_date : String
+    gender: String,
+    password: String
 },{
     collation : "User"
 });
