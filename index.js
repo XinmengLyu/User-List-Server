@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
+    //console.log("hello world!")
     res.json({ message: "hello to user list app." });
 });
 
