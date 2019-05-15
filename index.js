@@ -10,10 +10,24 @@ mongoose.connect(dbURL, { useNewUrlParser: true })
     .then(() => { console.log("database connected"); })
     .catch(err => console.error(err));
 
+//Use middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080;
+app.use((req, res, next) => {
+    console.log("A " + req.method + " request received at " + new Date());
+    next();
+});
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    next();
+});
 
 app.get('/', (req, res) => {
     //console.log("hello world!")
@@ -93,5 +107,7 @@ router.route('/users/:uid')
     });
 
 app.use('/api', router);
+
+var port = process.env.PORT || 8080;
 
 app.listen(port, () => console.log("listening port " + port));
