@@ -7,8 +7,6 @@ var userSchema = new Schema({
     age : Number,
     gender: String,
     password: String
-},{
-    collation : "User"
 });
 
 module.exports = mongoose.model('User', userSchema);

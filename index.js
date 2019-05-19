@@ -97,7 +97,7 @@ router.route('/users/:uid')
         });
     })
     .delete((req, res) => {
-        User.remove({ _id: req.params.uid }, (err, result) => {
+        User.deleteOne({ _id: req.params.uid }, (err, result) => {
             if (err) {
                 console.log(err);
                 res.json(err);
