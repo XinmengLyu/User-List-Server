@@ -44,10 +44,8 @@ router.route('/users')
         User.find((err, users) => {
             if (err) {
                 console.log(err);
-                res.json(err);
-            }
-            //console.log("find done.");
-            res.json(users);
+                res.status(500).send(err);
+            } else res.status(200).json(users);
         });
     })
     .post((req, res) => {
@@ -60,9 +58,8 @@ router.route('/users')
         user.save((err, result) => {
             if (err) {
                 console.log(err);
-                res.json(err);
-            }
-            res.json({ message: `User ${result._id} created!` });
+                res.status(500).send(err);
+            } else res.status(200).json({ message: `User ${result._id} created!` });
         });
     });
 
@@ -71,27 +68,38 @@ router.route('/users/:uid')
         User.findById(req.params.uid, (err, user) => {
             if (err) {
                 console.log(err);
-                res.json(err);
-            }
-            res.json(user);
+                res.status(500).send(err);
+            } else res.status(200).json(user);
         });
     })
     .put((req, res) => {
-        User.findOneAndUpdate({ _id: req.params.uid }, {...req.body}, (err, result) => {
-            if(err){
+        //console.log({...req.body});
+        User.findById(req.params.uid, (err, user) => {
+            if (err) {
                 console.log(err);
-                res.json(err);
-            }
-            res.json({message: `User ${result._id} updated`});
+                res.status(500).send(err);
+            } else if (user.password !== req.body.password) {
+                res.status(210).json({ message: "Wrong Password!" });
+            } else {
+                user.first_name = req.body.first_name;
+                user.last_name = req.body.last_name;
+                user.age = req.body.age;
+                user.gender = req.body.gender;
+                user.save((err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else res.status(200).json({ message: `User ${result._id} created!` });
+                });
+            };
         })
     })
     .delete((req, res) => {
-        User.findOneAndDelete({ _id: req.params.uid }, (err, result) => {
+        User.findOneAndDelete({ _id: req.params.uid }, (err, user) => {
             if (err) {
                 console.log(err);
-                res.json(err);
-            }
-            res.json({ message: `User ${result._id} deleted!` })
+                res.status(500).send(err);
+            } else res.status(200).json({ message: `User ${user._id} deleted!` })
         });
     });
 
