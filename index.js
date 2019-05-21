@@ -77,27 +77,16 @@ router.route('/users/:uid')
         });
     })
     .put((req, res) => {
-        User.findById(req.params.uid, (err, user) => {
-            if (err) {
+        User.findOneAndUpdate({ _id: req.params.uid }, {...req.body}, (err, result) => {
+            if(err){
                 console.log(err);
                 res.json(err);
             }
-            user.first_name = req.body.first_name;
-            user.last_name = req.body.last_name;
-            user.age = req.body.age;
-            user.gender = req.body.gender;
-            user.password = req.body.password;
-            user.save((err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.json(err);
-                }
-                res.json({ message: `User ${result._id} update!` });
-            });
-        });
+            res.json({message: `User ${result._id} updated`});
+        })
     })
     .delete((req, res) => {
-        User.deleteOne({ _id: req.params.uid }, (err, result) => {
+        User.findOneAndDelete({ _id: req.params.uid }, (err, result) => {
             if (err) {
                 console.log(err);
                 res.json(err);
