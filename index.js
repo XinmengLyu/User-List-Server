@@ -103,6 +103,16 @@ router.route('/users/:uid')
         });
     });
 
+// router.route("/test")
+//     .get((req, res) => {
+//         User.updateMany({}, {password: "password"}, (err, result) => {
+//             if(err){
+//                 console.log(err);
+//                 res.status(500).send(err);
+//             }else res.status(200).send(result);
+//         });
+//     });
+
 app.use('/api', router);
 
 var port = process.env.PORT || 8080;
